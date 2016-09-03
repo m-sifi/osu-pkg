@@ -22,7 +22,7 @@ namespace osuppkg
     {
 
         public const string osuBeatmapUrl = "https://osu.ppy.sh/d/";
-        public const string osuBeatmapConfigFileName = "osuppkg.conf";
+        public const string osuBeatmapConfigFileName = "config";
         public static string osuDirectory;
         public static string osuSongDirectory;
 
