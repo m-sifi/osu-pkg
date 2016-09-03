@@ -66,9 +66,16 @@ namespace osuppkg
                 StreamWriter sr = File.CreateText(Directory.GetCurrentDirectory() + "\\" + osuBeatmapConfigFileName);
                 sr.WriteLine("InstallLocation=" + osuDirectory);
                 sr.Close();
-            }
 
-            Console.Clear();
+                try
+                {
+                    Console.Clear();
+                } catch (Exception ex)
+                {
+
+                }
+            }
+                
             Console.WriteLine("Welcome to 'osuppkg'\n");
 
 
