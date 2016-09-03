@@ -3,6 +3,8 @@ A simple tool that allows you to backup your beatmaplist into a file and restore
 
 ## Warning: This tool assumes that the install folder for osu! is at ``` /Appdata/Local/osu!/```, support for other installation folders is being worked on
 
+![List Beatmaps](https://puu.sh/qY5cP/bbf03a80bd.gif "List Beatmaps")
+
 ### Available commands
 - ``` -h ``` or ```--help``` 
 - ``` -q ``` or ```--query```
