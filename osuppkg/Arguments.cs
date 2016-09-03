@@ -35,18 +35,21 @@ namespace osuppkg
             _add();
         }
 
-        private void _add() {
+        private void _add()
+        {
             ARGS.Add(name, this);
         }
 
-        public static Arguments GetArgsByName(string name) {
+        public static Arguments GetArgsByName(string name)
+        {
             return ARGS[name];
         }
 
-        public static Arguments CheckArgsFromIdentifier(string input) {
-            foreach(KeyValuePair<string, Arguments> entry in ARGS)
-            {      
-                for(int i = 0; i < entry.Value.identifier.Length; i++)
+        public static Arguments CheckArgsFromIdentifier(string input)
+        {
+            foreach (KeyValuePair<string, Arguments> entry in ARGS)
+            {
+                for (int i = 0; i < entry.Value.identifier.Length; i++)
                 {
                     bool result = (input == entry.Value.identifier[i]);
                     if (result) return entry.Value;

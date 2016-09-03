@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>osuppkg - downloading</title>
+    <script src="osuppkg.js"></script>
+    <script src="base-osuppkg.js"></script>
+    <script>
+        window.onload = function () {
+            var i = 0;
+            var id = 0;
+
+            var text = document.getElementById("madman");
+            text.innerHTML = "Currently downloading: " + beatmapURL[i];
+
+            id = setInterval(function () {
+                if (i < beatmapURL.length) {
+
+                    var text = document.getElementById("madman");
+                    text.innerHTML = "Currently downloading: " + beatmapURL[i];
+
+                    var wnd = window.open(beatmapURL[i], '_blank');
+                    setTimeout(function () {
+                        wnd.close();
+                    }, 3000);
+
+                    i++;
+
+                    if (i >= beatmapURL.length - 1) {
+                        text.innerHTML = "Downloading Complete!";
+                        alert("osuppkg has completed! enjoy.");
+                        clearInterval(id);
+                    }
+
+                }
+            }, 5000);
+        }
+    </script>
+</head>
+<body>
+    <h1>osuppkg</h1>
+    <h3 id="madman">Currently downloading: </h3>
+</body>
+</html>

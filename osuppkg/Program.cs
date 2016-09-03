@@ -21,65 +21,60 @@ namespace osuppkg
     class Program
     {
 
-        //public const string osuBeatmapUrl = "https://osu.ppy.sh/d/";
-        public const string osuBeatmapUrl = "http://bloodcat.com/osu/s/";
+        public const string osuBeatmapUrl = "https://osu.ppy.sh/d/";
+        //public const string osuBeatmapUrl = "http://bloodcat.com/osu/s/";
         public const string osuBeatmapConfigFileName = "osu.conf";
         public static string osuDirectory;
-        public static string tmpDirectory;
+        public static string osuSongDirectory;
 
         static void Main(string[] args)
         {
 
             WebRequest.DefaultWebProxy = null;
             ServicePointManager.DefaultConnectionLimit = 100;
-            
-            if(File.Exists(Directory.GetCurrentDirectory() + "\\" + osuBeatmapConfigFileName))
+
+            if (File.Exists(Directory.GetCurrentDirectory() + "\\" + osuBeatmapConfigFileName))
             {
                 string[] confs = File.ReadAllLines(Directory.GetCurrentDirectory() + "\\" + osuBeatmapConfigFileName);
-                
-                foreach(string s in confs)
+
+                foreach (string s in confs)
                 {
                     int i;
-                    if((i = s.IndexOf("InstallLocation=")) >= 0)
+                    if ((i = s.IndexOf("InstallLocation=")) >= 0)
                     {
                         osuDirectory = s.Substring("InstallLocation=".Length);
                     }
                 }
 
                 //Defaults to default osu install folder
-                if(osuDirectory == null)
+                if (osuDirectory == null)
                 {
-                    osuDirectory = Environment.GetEnvironmentVariable("LocalAppData") + "/osu!/Songs";
+                    osuDirectory = Environment.GetEnvironmentVariable("LocalAppData") + "/osu!/";
                 }
 
-            } else {
+            }
+            else
+            {
 
                 Console.WriteLine("Please enter your osu! install location, leave it empty if it is at the default install location.");
                 Console.Write("Location: ");
                 osuDirectory = Console.ReadLine();
 
-                if(osuDirectory == "")
+                if (osuDirectory == "")
                 {
-                    osuDirectory = Environment.GetEnvironmentVariable("LocalAppData") + "/osu!/Songs";
+                    osuDirectory = Environment.GetEnvironmentVariable("LocalAppData") + "/osu!/";
                 }
 
                 StreamWriter sr = File.CreateText(Directory.GetCurrentDirectory() + "\\" + osuBeatmapConfigFileName);
                 sr.WriteLine("InstallLocation=" + osuDirectory);
                 sr.Close();
 
-                try
-                {
-                    Console.Clear();
-                } catch (Exception ex)
-                {
-
-                }
+                Console.Clear();
             }
-                
+
             Console.WriteLine("Welcome to 'osuppkg'\n");
 
-
-            tmpDirectory = Directory.GetCurrentDirectory() + "\\tmp\\";
+            osuSongDirectory = osuDirectory + "\\Songs\\";
 
             Arguments help = new Arguments("help", "-h", "--help");
             Arguments query = new Arguments("query", "-q", "--query");
@@ -96,72 +91,80 @@ namespace osuppkg
                 else if (a == Arguments.GetArgsByName("query"))
                 {
                     DisplayBeatmaps();
+                    if (args.Length > 1)
+                    {
+                        StreamWriter sw = File.CreateText(args[1]);
+                        List<string> beatmaps = GetBeatmaps();
+                        foreach (string song in beatmaps)
+                        {
+                            sw.WriteLine(song);
+                        }
+                    }
                 }
                 else if (a == Arguments.GetArgsByName("download")) //Needs rework
                 {
 
-                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\tmp\\");
+                    List<string> beatmapURL = new List<string>();
+                    int count = 0;
 
-                    //TODO: Need to rewrite code
-                    //Starting from here
-                    //if (args.Length > 1)
-                    //{
-                    //    //Check if string is a .txt file
-                    //    if (File.Exists(args[1]))
-                    //    {
-                    //        String[] beatmapList = File.ReadAllLines(args[1]);
-                    //        foreach (string s in beatmapList)
-                    //        {
-                    //            String[] tmp = s.Split(' ');
-                    //            string beatmap = osuBeatmapUrl + tmp[0];
-                    //            Process.Start(beatmap);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        //Search for osu beatmaps
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    Console.WriteLine("No beatmap was found..");
-                    //}
-                    //TODO: Need to rewrite code
-                    //Ends here
-                    for (int i = 0; i < args.Length; i++)
+                    for (int i = 1; i < args.Length; i++)
                     {
                         if (File.Exists(args[i]))
                         {
-                            String[] beatmapList = File.ReadAllLines(args[1]);
+                            List<string> beatmapList = GetIDFromList(File.ReadAllLines(args[i]).ToList<string>());
+                            List<string> currentList = GetIDFromList(GetBeatmaps());
+
+                            int duplicateCount = 0;
+                            int originalListCount = beatmapList.Count;
+                            foreach (string str in currentList)
+                            {
+                                if(beatmapList.Contains(str)) {
+                                    duplicateCount++;
+                                    beatmapList.Remove(str);
+                                }
+                            }
+
+                            Console.WriteLine("There are {0} duplicates out of the {1} from the given list, removing for optimisations..", duplicateCount, originalListCount);
+
+                            count = beatmapList.Count;
+
                             foreach (string s in beatmapList)
                             {
                                 String[] tmp = s.Split(' ');
-                                string beatmap = osuBeatmapUrl + tmp[0];
-                                //Process.Start(beatmap); //DANGEROUS AF
+                                beatmapURL.Add(osuBeatmapUrl + tmp[0]);
+                            }
+                        }
+                        
+                        if(count > 0) {
+                            string beatmapURLJS = "var beatmapURL = [ ";
 
-                                Console.Write("Downloading '{0}'\t", beatmap);
+                            for (int j = 0; j < beatmapURL.Count; j++)
+                            {
+                                beatmapURLJS += "'" + beatmapURL[j] + "'";
 
-                                for(int j = 1; j < tmp.Length; j++)
+                                if (i != beatmapURL.Count - 1)
                                 {
-                                    Console.Write(tmp[j]);
+                                    beatmapURLJS += ", ";
                                 }
-
-                                Console.WriteLine();
-
-                                //using (var progress = new ProgressBar())
-                                //{
-                                //    for (int j = 0; j <= 100; j++)
-                                //    {
-                                //        progress.Report((double)j / 100);
-                                //        Thread.Sleep(20);
-                                //    }
-                                //}
-
-                                using(var client = new WebClient())
+                                else
                                 {
-                                    client.DownloadFile(beatmap, tmpDirectory + s + ".osz");
+                                    beatmapURLJS += " ];";
                                 }
                             }
+
+                            StreamWriter sw = File.CreateText(Directory.GetCurrentDirectory() + "\\html\\osuppkg.js");
+                            sw.WriteLine(beatmapURLJS);
+
+                            sw.WriteLine("");
+
+                            sw.Close();
+
+                            Console.WriteLine("Your browser will now attempt to download {0} beatmaps..", count);
+                            Console.WriteLine("** Do not attempt to close any tabs while the script is running **");
+                            Process.Start(Directory.GetCurrentDirectory() + "\\html\\index.html");
+                        } else
+                        {
+                            Console.WriteLine("There is nothing to download. Exiting..");
                         }
                     }
                 }
@@ -192,13 +195,39 @@ namespace osuppkg
 
         public static void DisplayBeatmaps()
         {
-            string[] s = Directory.GetDirectories(osuDirectory);
+            List<string> s = GetBeatmaps();
             foreach (string str in s)
             {
-                string songdir = "Local/osu!/Songs\\";
-                int index = str.IndexOf(songdir);
-                Console.WriteLine("{0}", str.Substring(index + songdir.Length));
+                Console.WriteLine("{0}", str);
             }
+        }
+
+        public static List<string> GetBeatmaps()
+        {
+            string[] s = Directory.GetDirectories(osuSongDirectory);
+            List<string> result = new List<string>();
+
+            foreach (string str in s)
+            {
+                int index = str.IndexOf(osuSongDirectory);
+                result.Add(str.Substring(index + osuSongDirectory.Length));
+            }
+
+            return result;
+        }
+
+        public static List<string> GetIDFromList(List<string> list)
+        {
+            List<string> result = new List<string>();
+
+            foreach (string str in list)
+            {
+                string s;
+                s = str.Split(' ')[0];
+                result.Add(s);
+            }
+
+            return result;
         }
     }
 }
