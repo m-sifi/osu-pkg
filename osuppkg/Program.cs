@@ -134,8 +134,7 @@ namespace osuppkg
 
                             foreach (string s in beatmapList)
                             {
-                                String[] tmp = s.Split(' ');
-                                beatmapURL.Add(osuBeatmapUrl + tmp[0]);
+                                beatmapURL.Add(osuBeatmapUrl + s);
                             }
                         } else
                         {
@@ -143,21 +142,22 @@ namespace osuppkg
                         }
                         
                         if(count > 0) {
+
                             string beatmapURLJS = "var beatmapURL = [ ";
 
                             for (int j = 0; j < beatmapURL.Count; j++)
                             {
                                 beatmapURLJS += "'" + beatmapURL[j] + "'";
 
-                                if (i != beatmapURL.Count - 1)
+                                if (i < beatmapURL.Count - 1)
                                 {
                                     beatmapURLJS += ", ";
                                 }
-                                else
-                                {
-                                    beatmapURLJS += " ];";
-                                }
+
+                                
                             }
+
+                            beatmapURLJS += " ];";
 
                             StreamWriter sw = File.CreateText(Directory.GetCurrentDirectory() + "\\html\\osuppkg.js");
                             sw.WriteLine(beatmapURLJS);
