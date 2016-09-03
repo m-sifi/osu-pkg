@@ -14,6 +14,9 @@ You can change the install location anytime in ```osu.conf``` by editing it with
 - No login - osuppkg will use your main browser to download songs (Just be sure to be logged into osu! on it)
 - Optimisations - osuppkg will only download missing beatmaps
 
+## Download
+[https://github.com/sfook/osu-pkg/releases](https://github.com/sfook/osu-pkg/releases)
+
 ### Available commands
 - ``` -h ``` or ```--help``` 
 - ``` -q ``` or ```--query```
