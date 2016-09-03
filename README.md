@@ -18,3 +18,5 @@ A simple tool that allows you to backup your beatmaplist into a file and restore
     - Lists all beatmaps installed
 - ``` -d ``` or ```--download```
     - Downloads the beatmap using the list of beatmaps provided/specific beatmap (not working at the moment)
+
+### Note that downloading beatmaps requires you to be logged into osu! on your main browser
