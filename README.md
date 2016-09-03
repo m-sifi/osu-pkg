@@ -8,6 +8,12 @@ You can change the install location anytime in ```osu.conf``` by editing it with
 ![List Beatmaps](/screenshots/query.gif)
 ![Download Beatmaps](/screenshots/download.gif)
 
+## Main Features
+- Export your current beatmap list to share with people without having to zip up your songs folder
+- Downloads all the beatmaps from a given beatmap list
+- No login - osuppkg will use your main browser to download songs (Just be sure to be logged into osu! on it)
+- Optimisations - osuppkg will only download missing beatmaps
+
 ### Available commands
 - ``` -h ``` or ```--help``` 
 - ``` -q ``` or ```--query```
