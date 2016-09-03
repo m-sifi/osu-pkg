@@ -25,8 +25,11 @@ namespace osuppkg
 
         int progressBar = 0;
 
+
         static void Main(string[] args)
         {
+
+            Console.WriteLine("Welcome to 'osuppkg'\n");
 
             osuDirectory = Environment.GetEnvironmentVariable("LocalAppData") + "/osu!/Songs";
 
@@ -55,13 +58,8 @@ namespace osuppkg
                             String[] beatmapList = File.ReadAllLines(args[1]);
                             foreach (string s in beatmapList) {
                                 String[] tmp = s.Split(' ');
-
-                                using(WebClient client = new WebClient())
-                                {
-
-                                    string beatmap = osuBeatmapUrl + tmp[0];
-                                    Process.Start(beatmap);
-                                }
+                                string beatmap = osuBeatmapUrl + tmp[0];
+                                Process.Start(beatmap);
                             }
                         } else
                         {
@@ -84,14 +82,15 @@ namespace osuppkg
 
         public static void DisplayAbout()
         {
-            Console.WriteLine("Welcome to 'osuppkg'");
             Console.WriteLine("Type -h / -help to display all the commands available");
         }
 
         public static void DisplayHelp()
         {
-            Console.WriteLine("Welcome to 'osuppkg'");
             Console.WriteLine("All the commands available: ");
+            Console.WriteLine("-h or --help\tDisplays available commands");
+            Console.WriteLine("-q or --query\tLists all beatmaps installed");
+            Console.WriteLine("-d or --download\tDownloads the beatmap using the list of beatmaps provided/specific beatmap (not working at the moment)");
         }
 
         public static void DisplayBeatmaps()
