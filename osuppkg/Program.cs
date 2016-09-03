@@ -22,8 +22,7 @@ namespace osuppkg
     {
 
         public const string osuBeatmapUrl = "https://osu.ppy.sh/d/";
-        //public const string osuBeatmapUrl = "http://bloodcat.com/osu/s/";
-        public const string osuBeatmapConfigFileName = "osu.conf";
+        public const string osuBeatmapConfigFileName = "osuppkg.conf";
         public static string osuDirectory;
         public static string osuSongDirectory;
 
@@ -72,7 +71,7 @@ namespace osuppkg
                 Console.Clear();
             }
 
-            Console.WriteLine("Welcome to 'osuppkg'\n");
+            Console.WriteLine("\nWelcome to 'osuppkg'\n");
 
             osuSongDirectory = osuDirectory + "\\Songs\\";
 
@@ -104,6 +103,11 @@ namespace osuppkg
                 else if (a == Arguments.GetArgsByName("download")) //Needs rework
                 {
 
+                    if(args.Length <= 1)
+                    {
+                         Console.WriteLine("-d or --download\tDownloads the beatmaps listed from [file]\n\tThe [file] can come from the query results (which makes backing up/sharing of beatmaps really easy)\n\tThis command will open up your default browser (which HAS to be logged into osu!) and download each beatmap\n\n\tThere's a delay between downloads as osu! servers seems to reject your connection if there's too many requests\n\tBut once every beatmap has been downloaded, an alert should pop up and you're ready to play the new maps\n\tDo note that you're not required to close the tabs (in the case the beatmap is removed) as the script running will close it for you\n\tThis process may take a while depending on your computer and network speed");
+                    }
+
                     List<string> beatmapURL = new List<string>();
                     int count = 0;
 
@@ -133,6 +137,9 @@ namespace osuppkg
                                 String[] tmp = s.Split(' ');
                                 beatmapURL.Add(osuBeatmapUrl + tmp[0]);
                             }
+                        } else
+                        {
+                            Console.WriteLine("Invalid File/Beatmap");
                         }
                         
                         if(count > 0) {
@@ -187,10 +194,10 @@ namespace osuppkg
 
         public static void DisplayHelp()
         {
-            Console.WriteLine("All the commands available: ");
-            Console.WriteLine("-h or --help\tDisplays available commands");
-            Console.WriteLine("-q or --query\tLists all beatmaps installed");
-            Console.WriteLine("-d or --download\tDownloads the beatmap using the list of beatmaps provided/specific beatmap (not working at the moment)");
+            Console.WriteLine("All the commands available:\n");
+            Console.WriteLine("-h or --help\tDisplays available commands and usage\n\n");
+            Console.WriteLine("-q or --query\tLists all beatmaps currently installed in your osu! songs folder\n\tYou can save the results into a text file by adding the file name you wish to save the result\n\tFor example, if I wanted to save my beatmaps as 'backup.txt' the command would be: $ osuppkg -q backup.txt\n\n");
+            Console.WriteLine("-d or --download\tDownloads the beatmaps listed from [file]\n\tThe [file] can come from the query results (which makes backing up/sharing of beatmaps really easy)\n\tThis command will open up your default browser (which HAS to be logged into osu!) and download each beatmap\n\n\tThere's a delay between downloads as osu! servers seems to reject your connection if there's too many requests\n\tBut once every beatmap has been downloaded, an alert should pop up and you're ready to play the new maps\n\tDo note that you're not required to close the tabs (in the case the beatmap is removed) as the script running will close it for you\n\tThis process may take a while depending on your computer and network speed");
         }
 
         public static void DisplayBeatmaps()
