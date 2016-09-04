@@ -5,6 +5,18 @@ A simple tool that allows you to backup your beatmaplist into a file and restore
 
 You can change the install location anytime in ```osu.conf``` by editing it with InstallLocation=[OsuInstallPath]
 
+<<<<<<< HEAD
+
+## Main Features
+- Export your current beatmap list to share with people without having to zip up your songs folder
+- Downloads all the beatmaps from a given beatmap list
+- No login - osuppkg will use your main browser to download songs (Just be sure to be logged into osu! on it)
+- Optimisations - osuppkg will only download missing beatmaps
+
+## Download
+[https://github.com/sfook/osu-pkg/releases](https://github.com/sfook/osu-pkg/releases)
+
+>>>>>>> 9e29e48875d15db44036c7eb37d38daaa56af3b8
 ### Available commands
 - ``` -h ``` or ```--help``` 
 - ``` -q ``` or ```--query```
