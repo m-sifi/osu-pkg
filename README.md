@@ -5,9 +5,6 @@ A simple tool that allows you to backup your beatmaplist into a file and restore
 
 You can change the install location anytime in ```osu.conf``` by editing it with InstallLocation=[OsuInstallPath]
 
-![List Beatmaps](/screenshots/query.gif)
-![Download Beatmaps](/screenshots/download.gif)
-
 ### Available commands
 - ``` -h ``` or ```--help``` 
 - ``` -q ``` or ```--query```
